@@ -1,7 +1,5 @@
 # 💰 Controle de Gastos Residenciais
 
-Este repositório agora segue uma estrutura padronizada inspirada no template do GitHub, com convenções de projeto para o frontend e configuração de assistente no diretório raiz.
-
 ## Estrutura principal
 
 ```text
