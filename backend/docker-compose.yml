@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  controle-gastos-api:
+    build: .
+    ports:
+      - "5000:80"
+    volumes:
+      - ./Data:/app/Data
+    environment:
+      - ASPNETCORE_URLS=http://+:80

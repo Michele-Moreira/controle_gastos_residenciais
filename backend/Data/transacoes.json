@@ -1,0 +1,51 @@
+[
+  {
+    "id": "10ea748a-5e29-47dd-a262-635a4eb5439b",
+    "descricao": "Sal\u00E1rio",
+    "valor": 3500.00,
+    "tipo": "receita",
+    "pessoaId": "318a5bbb-3ae4-43a2-a651-16bf151528a8"
+  },
+  {
+    "id": "a182b905-f232-4694-b09c-ad6ecd90ba31",
+    "descricao": "Sal\u00E1rio",
+    "valor": 450.50,
+    "tipo": "despesa",
+    "pessoaId": "318a5bbb-3ae4-43a2-a651-16bf151528a8"
+  },
+  {
+    "id": "7a6307f2-e9b0-4c38-9955-dfa76b8911ef",
+    "descricao": "Mesada",
+    "valor": 500,
+    "tipo": "despesa",
+    "pessoaId": "2b0041f9-101e-4eed-adc8-9aa9cfe39933"
+  },
+  {
+    "id": "a69b3751-eaf8-447a-90f7-7257b0d2477d",
+    "descricao": "Sal\u00E1rio",
+    "valor": 5600.00,
+    "tipo": "receita",
+    "pessoaId": "17b7f43d-7b9f-4f7a-81dd-1343bdabf438"
+  },
+  {
+    "id": "b06bdbd8-ceb8-423d-9bd4-11d75fc63b28",
+    "descricao": "Sal\u00E1rio",
+    "valor": 500.00,
+    "tipo": "despesa",
+    "pessoaId": "17b7f43d-7b9f-4f7a-81dd-1343bdabf438"
+  },
+  {
+    "id": "acd6cc10-0034-4565-a1c1-6c20ca81d02e",
+    "descricao": "Sal\u00E1rio",
+    "valor": 250.50,
+    "tipo": "despesa",
+    "pessoaId": "1d372b47-16b3-47eb-b048-32b6cc38345f"
+  },
+  {
+    "id": "f60fcd38-55e5-4aea-81be-0472ba001303",
+    "descricao": "Sal\u00E1rio",
+    "valor": 2500.00,
+    "tipo": "receita",
+    "pessoaId": "1d372b47-16b3-47eb-b048-32b6cc38345f"
+  }
+]
