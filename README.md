@@ -1,4 +1,19 @@
-# 💰 Controle de Gastos Residenciais - Backend API
+# 💰 Controle de Gastos Residenciais
+
+Este repositório agora segue uma estrutura padronizada inspirada no template do GitHub, com convenções de projeto para o frontend e configuração de assistente no diretório raiz.
+
+## Estrutura principal
+
+```text
+.
+├── .claude/              # regras, skills, agents e commands para o assistente
+├── backend/              # API .NET 8 com Minimal APIs
+├── docs/                 # documentação de convenções do projeto
+├── frontend/             # app React + TypeScript + Vite
+└── README.md
+```
+
+## Backend
 
 Esta é uma Web API robusta desenvolvida em **C#** utilizando **.NET 8** (Minimal APIs), projetada para gerenciar as finanças de um grupo residencial. O sistema permite o cadastro de pessoas, lançamento de movimentações financeiras (receitas e despesas) e fornece relatórios consolidados com validações rígidas de regras de negócio.
 
@@ -50,7 +65,17 @@ docker compose up --build
 
 ## 🧩 Frontend (React + TypeScript)
 
-O frontend está localizado em `frontend/` e usa **Vite** com **React** e **TypeScript**.
+O frontend está localizado em `frontend/` e usa **Vite** com **React** e **TypeScript**. A organização foi padronizada em pastas como:
+
+```text
+frontend/src/
+├── components/
+├── hooks/
+├── lib/
+├── pages/
+├── styles/
+└── types/
+```
 
 ### Como executar o frontend
 
