@@ -44,3 +44,36 @@ Certifique-se de ter o **Docker** instalado em sua máquina.
 
 ```bash
 docker compose up --build
+```
+
+---
+
+## 🧩 Frontend (React + TypeScript)
+
+O frontend está localizado em `frontend/` e usa **Vite** com **React** e **TypeScript**.
+
+### Como executar o frontend
+
+1. Navegue até a pasta do frontend:
+
+```bash
+cd frontend
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Inicie o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+4. Abra o aplicativo no navegador em:
+
+```text
+http://localhost:5173
+```

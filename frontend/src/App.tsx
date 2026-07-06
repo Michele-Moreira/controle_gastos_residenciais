@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import "./App.css";
 import {
 	criarPessoa,
@@ -8,7 +8,7 @@ import {
 	listarTotais,
 	listarTransacoes,
 } from "./api";
-import type { Pessoa, TotaisResumo, Transacao } from "./types";
+import type { Pessoa, TotaisPessoa, TotaisResumo, Transacao } from "./types";
 
 function App() {
 	const [pessoas, setPessoas] = useState<Pessoa[]>([]);
@@ -23,7 +23,7 @@ function App() {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 
-	const carregarDados = async () => {
+	const carregarDados = useCallback(async () => {
 		try {
 			const [pessoasResponse, transacoesResponse, totaisResponse] =
 				await Promise.all([
@@ -40,11 +40,11 @@ function App() {
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Erro ao carregar dados");
 		}
-	};
+	}, [pessoaId]);
 
 	useEffect(() => {
 		carregarDados();
-	}, []);
+	}, [carregarDados]);
 
 	const handleCriarPessoa = async (event: FormEvent) => {
 		event.preventDefault();
@@ -98,6 +98,21 @@ function App() {
 		}
 	};
 
+	const renderPessoaTotais = (pessoa: TotaisPessoa) => (
+		<li key={pessoa.pessoaId} className="totais-item">
+			<div>
+				<p className="totais-name">{pessoa.nome}</p>
+				<p className="totais-subtitle">
+					Receitas: R$ {pessoa.totalReceitas.toFixed(2)}
+				</p>
+				<p className="totais-subtitle">
+					Despesas: R$ {pessoa.totalDespesas.toFixed(2)}
+				</p>
+			</div>
+			<p className="totais-saldo">Saldo: R$ {pessoa.saldo.toFixed(2)}</p>
+		</li>
+	);
+
 	return (
 		<div className="app-shell">
 			<header className="hero-card">
@@ -115,7 +130,18 @@ function App() {
 
 			{error ? <div className="alert error">{error}</div> : null}
 			{success ? <div className="alert success">{success}</div> : null}
-
+			<section className="panel panel-wide">
+				<h2>Totais por pessoa</h2>
+				{totais?.pessoas && totais.pessoas.length > 0 ? (
+					<ul className="totais-grid">
+						{totais.pessoas.map(renderPessoaTotais)}
+					</ul>
+				) : (
+					<p className="empty-state">
+						Cadastre pessoas e transações para visualizar os totais individuais.
+					</p>
+				)}
+			</section>
 			<main className="grid">
 				<section className="panel">
 					<h2>Cadastrar pessoa</h2>
