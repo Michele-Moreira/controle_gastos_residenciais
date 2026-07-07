@@ -4,70 +4,60 @@
 
 ```text
 .
-├── .claude/              # regras, skills, agents e commands para o assistente
+├── .claude/              # regras, skills, agents e commands do assistente
 ├── backend/              # API .NET 8 com Minimal APIs
-├── docs/                 # documentação de convenções do projeto
+├── docs/                 # documentação de convenções e estrutura
 ├── frontend/             # app React + TypeScript + Vite
-└── README.md
+└── template-react/       # workspace React/Vite importado como template
 ```
+
+## Visão geral do monorepo
+
+Este repositório é um monorepo com múltiplos pacotes JavaScript gerenciados por `pnpm`.
+
+- `frontend/`: app principal React + TypeScript.
+- `template-react/`: workspace React + Vite importado como template.
+- `backend/`: API em C# .NET 8.
+
+A configuração do workspace está em `pnpm-workspace.yaml`.
+
+---
 
 ## Backend
 
-Esta é uma Web API robusta desenvolvida em **C#** utilizando **.NET 8** (Minimal APIs), projetada para gerenciar as finanças de um grupo residencial. O sistema permite o cadastro de pessoas, lançamento de movimentações financeiras (receitas e despesas) e fornece relatórios consolidados com validações rígidas de regras de negócio.
+O backend é uma Web API desenvolvida em **C#** com **.NET 8** (Minimal APIs), projetada para controlar finanças residenciais.
 
-O ambiente de desenvolvimento e persistência é totalmente isolado e orquestrado utilizando **Docker** e **Docker Compose**.
+A aplicação oferece:
 
----
+- cadastro e listagem de pessoas
+- lançamento de transações (receitas e despesas)
+- validações de tipo, valor e integridade referencial
+- relatórios consolidados de receita, despesa e saldo
 
-## 🚀 Funcionalidades & Regras de Negócio Implementadas
-
-### 👥 Gerenciamento de Pessoas
-* **Cadastro de Pessoas:** Registro com validações de campos obrigatórios.
-* **Listagem Completa:** Retorno de todos os usuários integrados ao sistema.
-* **Exclusão Segura:** Ao deletar uma pessoa, o sistema limpa automaticamente todas as transações associadas a ela (Cascade Delete em memória).
-
-### 💸 Controle de Transações (Movimentações)
-* **Validação de Tipo:** Aceita estritamente os tipos `receita` ou `despesa`.
-* **Validação de Valor:** Bloqueio de valores negativos ou zerados.
-* **Trava de Idade (Regra Crítica):** Menores de 18 anos são impedidos pelo sistema de registrar `receitas`, sendo permitido apenas o lançamento de `despesas`.
-* **Integridade Referencial:** Uma transação só pode ser criada se vinculada a um ID de pessoa válido e previamente cadastrado.
-
-### 📊 Relatórios Consolidados
-* **Consulta de Totais:** Endpoint que processa e agrupa o total de receitas, despesas e o saldo individual ($\text{receita} - \text{despesa}$) de cada pessoa, além de exibir um resumo geral com o saldo líquido de todo o sistema.
+A orquestração para desenvolvimento é feita com **Docker** e **Docker Compose**.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Como executar com Docker
 
-* **Linguagem:** C# (.NET 8)
-* **Arquitetura:** Minimal APIs (para alta performance e código enxuto)
-* **Validação de Dados:** Data Transfer Objects (DTOs) com validação de esquema
-* **Containerização:** Docker & Docker Compose
-* **Ferramenta de Testes:** Insomnia 
+Certifique-se de ter o **Docker** instalado.
 
----
-
-## 📦 Como Executar o Projeto com Docker
-
-Certifique-se de ter o **Docker** instalado em sua máquina.
-
-1. Clone o repositório para o seu ambiente local.
-2. Certifique-se de estar na raiz do repositório (onde `docker-compose.yml` foi adicionado).
-3. Execute o comando abaixo no terminal para buildar e iniciar a aplicação a partir da raiz:
+1. Na raiz do repositório, execute:
 
 ```bash
 docker compose up --build
 ```
 
-Observações:
-- O `docker-compose.yml` na raiz usa o contexto `./backend` para buildar a imagem. Isso permite rodar `docker compose up` na raiz ao invés de dentro de `backend/`.
-- O diretório `backend/Data` é montado como volume em `/app/Data` dentro do container, preservando os dados entre reinícios.
+2. O serviço `controle-gastos-api` builda usando o contexto `./backend`.
+3. O volume `./backend/Data:/app/Data` preserva os dados entre reinícios.
 
 ---
 
-## 🧩 Frontend (React + TypeScript)
+## Frontend
 
-O frontend está localizado em `frontend/` e usa **Vite** com **React** e **TypeScript**. A organização foi padronizada em pastas como:
+O app principal está em `frontend/` e usa **Vite**, **React** e **TypeScript**.
+
+### Estrutura do frontend
 
 ```text
 frontend/src/
@@ -79,49 +69,61 @@ frontend/src/
 └── types/
 ```
 
-### Como executar o frontend
-
-1. Navegue até a pasta do frontend:
+### Executar o frontend
 
 ```bash
 cd frontend
-```
-
-2. Instale as dependências:
-
-```bash
 npm install
-```
-
-3. Inicie o servidor de desenvolvimento:
-
-```bash
 npm run dev
 ```
 
-4. Abra o aplicativo no navegador em:
+Abra `http://localhost:5173` no navegador.
 
-```text
-http://localhost:5173
+---
+
+## Template React
+
+O workspace adicional `template-react/` contém um template React + Vite pré-configurado com:
+
+- ESLint
+- Prettier
+- EditorConfig
+- configuração de build Vite
+
+Para usar ou testar esse template:
+
+```bash
+cd template-react
+pnpm install
+pnpm run dev
 ```
 
 ---
 
-## 🧭 Monorepo
+## Monorepo e `pnpm`
 
-Este repositório foi preparado como um monorepo para gerenciar múltiplos pacotes JavaScript em workspaces.
+O projeto usa `pnpm` para gerenciar workspaces.
 
-- **Gerenciador recomendado:** `pnpm` (workspaces configuradas).
-- **Workspaces atuais:** `frontend`, `template-react` (ambos registrados em `pnpm-workspace.yaml`).
+### Workspaces configurados
 
-Comandos úteis na raiz do repositório:
+- `frontend`
+- `template-react`
+
+### Comandos úteis na raiz
 
 ```bash
-pnpm install    # instala dependências em todos os workspaces
-pnpm dev        # roda `dev` em todos os workspaces (pnpm -w -r run dev)
-pnpm build      # roda `build` em todos os workspaces
+pnpm install        # instala dependências em todos os workspaces
+pnpm -w -r run dev  # executa dev em todos os workspaces
+pnpm -w -r run build
 pnpm -w -r run lint
 ```
 
-Para adicionar outros pacotes, crie um `package.json` na pasta desejada (por exemplo `template-react`) ou mova projetos para uma pasta `packages/` e atualize `pnpm-workspace.yaml`.
+> Para adicionar outro workspace, crie a pasta com `package.json` e inclua-a em `pnpm-workspace.yaml`.
+
+---
+
+## Observações
+
+- O `docker-compose.yml` foi adicionado na raiz para permitir `docker compose up` a partir do diretório principal.
+- A pasta `template-react/` foi importada como um workspace React independente, sem afetar o app `frontend/`.
 
