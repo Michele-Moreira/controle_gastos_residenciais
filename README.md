@@ -8,7 +8,6 @@
 ├── backend/              # API .NET 8 com Minimal APIs
 ├── docs/                 # documentação de convenções e estrutura
 ├── frontend/             # app React + TypeScript + Vite
-└── template-react/       # workspace React/Vite importado como template
 ```
 
 ## Visão geral do monorepo
@@ -16,7 +15,6 @@
 Este repositório é um monorepo com múltiplos pacotes JavaScript gerenciados por `pnpm`.
 
 - `frontend/`: app principal React + TypeScript.
-- `template-react/`: workspace React + Vite importado como template.
 - `backend/`: API em C# .NET 8.
 
 A configuração do workspace está em `pnpm-workspace.yaml`.
@@ -81,25 +79,6 @@ Abra `http://localhost:5173` no navegador.
 
 ---
 
-## Template React
-
-O workspace adicional `template-react/` contém um template React + Vite pré-configurado com:
-
-- ESLint
-- Prettier
-- EditorConfig
-- configuração de build Vite
-
-Para usar ou testar esse template:
-
-```bash
-cd template-react
-pnpm install
-pnpm run dev
-```
-
----
-
 ## Monorepo e `pnpm`
 
 O projeto usa `pnpm` para gerenciar workspaces.
@@ -107,7 +86,6 @@ O projeto usa `pnpm` para gerenciar workspaces.
 ### Workspaces configurados
 
 - `frontend`
-- `template-react`
 
 ### Comandos úteis na raiz
 
@@ -125,5 +103,4 @@ pnpm -w -r run lint
 ## Observações
 
 - O `docker-compose.yml` foi adicionado na raiz para permitir `docker compose up` a partir do diretório principal.
-- A pasta `template-react/` foi importada como um workspace React independente, sem afetar o app `frontend/`.
 
