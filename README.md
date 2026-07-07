@@ -52,12 +52,16 @@ O ambiente de desenvolvimento e persistência é totalmente isolado e orquestrad
 Certifique-se de ter o **Docker** instalado em sua máquina.
 
 1. Clone o repositório para o seu ambiente local.
-2. Navegue até a pasta raiz onde se encontra o arquivo `docker-compose.yml`.
-3. Execute o comando abaixo no terminal para buildar e iniciar a aplicação:
+2. Certifique-se de estar na raiz do repositório (onde `docker-compose.yml` foi adicionado).
+3. Execute o comando abaixo no terminal para buildar e iniciar a aplicação a partir da raiz:
 
 ```bash
 docker compose up --build
 ```
+
+Observações:
+- O `docker-compose.yml` na raiz usa o contexto `./backend` para buildar a imagem. Isso permite rodar `docker compose up` na raiz ao invés de dentro de `backend/`.
+- O diretório `backend/Data` é montado como volume em `/app/Data` dentro do container, preservando os dados entre reinícios.
 
 ---
 
@@ -100,3 +104,24 @@ npm run dev
 ```text
 http://localhost:5173
 ```
+
+---
+
+## 🧭 Monorepo
+
+Este repositório foi preparado como um monorepo para gerenciar múltiplos pacotes JavaScript em workspaces.
+
+- **Gerenciador recomendado:** `pnpm` (workspaces configuradas).
+- **Workspaces atuais:** `frontend`, `template-react` (ambos registrados em `pnpm-workspace.yaml`).
+
+Comandos úteis na raiz do repositório:
+
+```bash
+pnpm install    # instala dependências em todos os workspaces
+pnpm dev        # roda `dev` em todos os workspaces (pnpm -w -r run dev)
+pnpm build      # roda `build` em todos os workspaces
+pnpm -w -r run lint
+```
+
+Para adicionar outros pacotes, crie um `package.json` na pasta desejada (por exemplo `template-react`) ou mova projetos para uma pasta `packages/` e atualize `pnpm-workspace.yaml`.
+

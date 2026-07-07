@@ -1,0 +1,15 @@
+{
+	"name": "controle-gastos-monorepo",
+	"private": true,
+	"version": "0.0.0",
+	"workspaces": [
+		"frontend",
+		"template-react"
+	],
+	"scripts": {
+		"bootstrap": "pnpm install",
+		"workspaces:dev": "pnpm -w -r run dev",
+		"workspaces:build": "pnpm -w -r run build",
+		"workspaces:lint": "pnpm -w -r run lint"
+	}
+}

@@ -1,0 +1,3 @@
+packages:
+  - 'frontend'
+  - 'template-react' # included if a package.json is added there
