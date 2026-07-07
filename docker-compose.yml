@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  controle-gastos-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    volumes:
+      - ./backend/Data:/app/Data
+    environment:
+      - ASPNETCORE_URLS=http://+:80
