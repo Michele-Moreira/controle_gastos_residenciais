@@ -1,69 +1,78 @@
-name: CI
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore backend
-        run: dotnet restore backend/ControleGastos.sln
-
-      - name: Build backend
-        run: dotnet build backend/ControleGastos.sln --no-restore -c Release
-
-      - name: Test backend
-        run: dotnet test backend/ControleGastos.sln --no-build -c Release --verbosity normal
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Lint JS workspaces
-        run: pnpm -w -r run lint
-
-      - name: Type check JS workspaces
-        run: pnpm -w -r run type-check
-
-      - name: Test JS workspaces
-        run: pnpm --filter frontend run test
-
-      - name: Install Playwright browsers
-        run: pnpm --filter frontend exec playwright install --with-deps chromium
-
-      - name: E2E tests
-        run: pnpm --filter frontend run test:e2e
-
-      - name: E2E API integration
-        run: pnpm --filter frontend run test:e2e:api
-        env:
-          E2E_REAL_API: "1"
-
-      - name: Build JS workspaces
-        run: pnpm -w -r run build
-
-      - name: Build backend Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: false
-          tags: controle_gastos_residenciais-controle-gastos-api:ci
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  HUSKY: 0
+  CI: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore backend
+        run: dotnet restore backend/ControleGastos.sln
+
+      - name: Build backend
+        run: dotnet build backend/ControleGastos.sln --no-restore -c Release
+
+      - name: Test backend
+        run: dotnet test backend/ControleGastos.sln --no-build -c Release --verbosity normal
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint frontend
+        run: pnpm --filter frontend run lint
+
+      - name: Type check frontend
+        run: pnpm --filter frontend run type-check
+
+      - name: Test frontend
+        run: pnpm --filter frontend run test
+
+      - name: Install Playwright browsers
+        run: pnpm --filter frontend exec playwright install --with-deps chromium
+
+      - name: E2E tests
+        run: pnpm --filter frontend run test:e2e
+
+      - name: E2E API integration
+        run: pnpm --filter frontend run test:e2e:api
+        env:
+          E2E_REAL_API: '1'
+
+      - name: Build frontend
+        run: pnpm --filter frontend run build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: controle-gastos-api:ci

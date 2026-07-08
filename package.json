@@ -12,6 +12,7 @@
 		"dev:frontend": "wait-on -t 120000 http-get://localhost:5000/health && pnpm --filter frontend dev",
 		"build": "pnpm --filter frontend build",
 		"lint": "pnpm --filter frontend lint",
+		"type-check": "pnpm --filter frontend type-check",
 		"workspaces:dev": "pnpm -w -r run dev",
 		"workspaces:build": "pnpm -w -r run build",
 		"workspaces:lint": "pnpm -r --if-present run lint",
