@@ -16,17 +16,8 @@ public sealed class PessoaEndpointsTests : IClassFixture<CustomWebApplicationFac
     }
 
     [Fact]
-    public async Task ListarPessoas_RequiresAuthentication()
-    {
-        var response = await _client.GetAsync("/pessoas");
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-    }
-
-    [Fact]
     public async Task CriarEListarPessoa_RetornaDadosEsperados()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var createResponse = await _client.PostAsJsonAsync("/pessoas", new CreatePessoaDto
         {
             Nome = "Maria",
@@ -48,8 +39,6 @@ public sealed class PessoaEndpointsTests : IClassFixture<CustomWebApplicationFac
     [Fact]
     public async Task CriarPessoa_ComDadosInvalidos_RetornaProblemDetails()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var response = await _client.PostAsJsonAsync("/pessoas", new CreatePessoaDto
         {
             Nome = "",
@@ -66,8 +55,6 @@ public sealed class PessoaEndpointsTests : IClassFixture<CustomWebApplicationFac
     [Fact]
     public async Task DeletarPessoa_RemovePessoaECascade()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var pessoaResponse = await _client.PostAsJsonAsync("/pessoas", new CreatePessoaDto
         {
             Nome = "João",

@@ -1,5 +1,4 @@
 import {
-	login,
 	requestJson,
 	validate,
 } from "@/lib/api-client";
@@ -17,8 +16,6 @@ import {
 	type TotaisResumo,
 	type Transacao,
 } from "@/lib/schemas";
-
-export { login };
 
 export async function listarPessoas(): Promise<Pessoa[]> {
 	const data = await requestJson("/pessoas");

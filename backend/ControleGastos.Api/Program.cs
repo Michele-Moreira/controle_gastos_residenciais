@@ -90,8 +90,6 @@ app.Use(async (context, next) =>
 
 app.UseCors();
 app.UseRateLimiter();
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 app.MapHealthChecks("/health/ready");
@@ -99,19 +97,13 @@ app.MapHealthChecks("/health/ready");
 var api = app.MapGroup("/")
     .RequireRateLimiting("api");
 
-api.MapGroup("/auth")
-    .MapAuthEndpoints();
-
-var secured = api.MapGroup("/")
-    .RequireAuthorization();
-
-secured.MapGroup("/pessoas")
+api.MapGroup("/pessoas")
     .MapPessoaEndpoints();
 
-secured.MapGroup("/transacoes")
+api.MapGroup("/transacoes")
     .MapTransacaoEndpoints();
 
-secured.MapGroup("/totais")
+api.MapGroup("/totais")
     .MapTotaisEndpoints();
 
 app.Run();

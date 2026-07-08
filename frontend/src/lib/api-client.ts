@@ -1,13 +1,6 @@
 import { z } from "zod";
 
-import { getStoredToken, setStoredToken } from "@/lib/auth";
-
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
-
-const loginResponseSchema = z.object({
-	token: z.string(),
-	expiresAt: z.string(),
-});
 
 type ProblemDetails = {
 	title?: string;
@@ -47,12 +40,10 @@ async function parseErrorMessage(response: Response): Promise<string> {
 }
 
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
-	const token = getStoredToken();
 	const response = await fetch(`${API_BASE_URL}${path}`, {
 		...init,
 		headers: {
 			"Content-Type": "application/json",
-			...(token ? { Authorization: `Bearer ${token}` } : {}),
 			...(init?.headers || {}),
 		},
 	});
@@ -77,26 +68,6 @@ function validate<T>(schema: z.ZodType<T>, data: unknown, context: string): T {
 		);
 	}
 	return result.data;
-}
-
-export async function login(username: string, password: string): Promise<void> {
-	const response = await fetch(`${API_BASE_URL}/auth/login`, {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ username, password }),
-	});
-
-	if (!response.ok) {
-		const message = await parseErrorMessage(response);
-		throw new Error(message || "Credenciais inválidas");
-	}
-
-	const data = validate(
-		loginResponseSchema,
-		await response.json(),
-		"login",
-	);
-	setStoredToken(data.token);
 }
 
 export { requestJson, validate };

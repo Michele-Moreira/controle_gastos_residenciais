@@ -15,12 +15,6 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.UseSetting("ConnectionStrings:Default", $"Data Source={_databasePath}");
         builder.UseSetting("Database:Provider", "Sqlite");
-        builder.UseSetting("Jwt:Issuer", "ControleGastos");
-        builder.UseSetting("Jwt:Audience", "ControleGastosApp");
-        builder.UseSetting("Jwt:Secret", "test-secret-key-minimum-32-characters");
-        builder.UseSetting("Jwt:ExpirationMinutes", "60");
-        builder.UseSetting("Auth:Username", "admin");
-        builder.UseSetting("Auth:Password", "admin");
     }
 
     protected override void Dispose(bool disposing)

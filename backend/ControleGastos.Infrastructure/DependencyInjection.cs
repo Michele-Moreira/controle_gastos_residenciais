@@ -1,13 +1,9 @@
 using ControleGastos.Application.Abstractions;
-using ControleGastos.Infrastructure.Auth;
 using ControleGastos.Infrastructure.Data;
 using ControleGastos.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace ControleGastos.Infrastructure;
 
@@ -17,9 +13,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
-        services.Configure<AuthSettings>(configuration.GetSection(AuthSettings.SectionName));
-
         var provider = configuration["Database:Provider"] ?? "Sqlite";
         var connectionString = configuration.GetConnectionString("Default")
             ?? "Data Source=controle_gastos.db";
@@ -45,31 +38,9 @@ public static class DependencyInjection
         services.AddScoped<IPessoaRepository, PessoaRepository>();
         services.AddScoped<ITransacaoRepository, TransacaoRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
         services.AddHealthChecks()
             .AddDbContextCheck<ControleGastosDbContext>("database");
-
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
-
-        services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
-            .Configure<Microsoft.Extensions.Options.IOptions<JwtSettings>>((options, jwtSettings) =>
-            {
-                var settings = jwtSettings.Value;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = settings.Issuer,
-                    ValidAudience = settings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Secret))
-                };
-            });
-
-        services.AddAuthorization();
 
         return services;
     }

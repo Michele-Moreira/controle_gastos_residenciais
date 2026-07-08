@@ -1,11 +1,5 @@
 import { expect, test } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => {
-	await page.addInitScript(() => {
-		localStorage.setItem("controle_gastos_token", "e2e-test-token");
-	});
-});
-
 test("carrega a página de finanças", async ({ page }) => {
 	await page.goto("/");
 

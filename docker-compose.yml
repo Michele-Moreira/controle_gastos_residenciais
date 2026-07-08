@@ -26,9 +26,6 @@ services:
       - ConnectionStrings__Default=Host=postgres;Port=5432;Database=controle_gastos;Username=controle_gastos;Password=controle_gastos
       - Cors__AllowedOrigins__0=http://localhost:5173
       - Cors__AllowedOrigins__1=http://127.0.0.1:5173
-      - Jwt__Secret=${JWT_SECRET:-production-secret-change-me-min-32-chars}
-      - Auth__Username=${AUTH_USERNAME:-admin}
-      - Auth__Password=${AUTH_PASSWORD:-admin}
     depends_on:
       postgres:
         condition: service_healthy

@@ -1,12 +1,6 @@
-import { Button } from "@/components/ui/button";
-
-type FinanceNavProps = {
-	onLogout?: () => void;
-};
-
 const links = ["Pessoas", "Transações", "Totais"];
 
-export function FinanceNav({ onLogout }: FinanceNavProps) {
+export function FinanceNav() {
 	return (
 		<header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 			<div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -25,18 +19,6 @@ export function FinanceNav({ onLogout }: FinanceNavProps) {
 						</span>
 					))}
 				</nav>
-
-				{onLogout ? (
-					<Button
-						type="button"
-						variant="outline"
-						size="sm"
-						onClick={onLogout}
-						className="text-xs uppercase tracking-widest"
-					>
-						Sair
-					</Button>
-				) : null}
 			</div>
 		</header>
 	);

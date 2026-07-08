@@ -1,12 +1,6 @@
 import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => {
-	await page.addInitScript(() => {
-		localStorage.setItem("controle_gastos_token", "e2e-test-token");
-	});
-});
-
 async function mockFinanceApi(page: Page) {
 	await page.route("**/api/pessoas", async (route) => {
 		if (route.request().method() === "POST") {

@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using ControleGastos.Application.Dtos;
-using ControleGastos.Tests.Support;
 using FluentAssertions;
 
 namespace ControleGastos.Tests;
@@ -18,8 +17,6 @@ public sealed class TransacaoEndpointsTests : IClassFixture<CustomWebApplication
     [Fact]
     public async Task MenorDeIdade_NaoPodeRegistrarReceita()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var pessoaResponse = await _client.PostAsJsonAsync("/pessoas", new CreatePessoaDto
         {
             Nome = "Carlos",
@@ -42,8 +39,6 @@ public sealed class TransacaoEndpointsTests : IClassFixture<CustomWebApplication
     [Fact]
     public async Task MenorDeIdade_PodeRegistrarDespesa()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var pessoaResponse = await _client.PostAsJsonAsync("/pessoas", new CreatePessoaDto
         {
             Nome = "Ana",
@@ -65,8 +60,6 @@ public sealed class TransacaoEndpointsTests : IClassFixture<CustomWebApplication
     [Fact]
     public async Task CriarTransacao_ComPessoaInexistente_RetornaBadRequest()
     {
-        await ApiTestClient.CreateAuthenticatedClientAsync(_client);
-
         var response = await _client.PostAsJsonAsync("/transacoes", new CreateTransacaoDto
         {
             Descricao = "Teste",

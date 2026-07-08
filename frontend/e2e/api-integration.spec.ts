@@ -3,12 +3,8 @@ import { expect, test } from "@playwright/test";
 test.describe("integração com API real", () => {
 	test.skip(!process.env.E2E_REAL_API, "Requer backend real (E2E_REAL_API=1)");
 
-	test("login e cadastro de pessoa contra API real", async ({ page }) => {
+	test("cadastro de pessoa contra API real", async ({ page }) => {
 		await page.goto("/");
-
-		await page.getByLabel("Usuário").fill("admin");
-		await page.getByLabel("Senha").fill("admin");
-		await page.getByRole("button", { name: "Entrar" }).click();
 
 		await expect(
 			page.getByRole("heading", { name: "Cadastrar Pessoa" }),

@@ -6,11 +6,7 @@ import { PersonTotalsSection } from "@/components/finance/person-totals-section"
 import { TransactionForm } from "@/components/finance/transaction-form";
 import { useFinancePage } from "@/hooks/use-finance-page";
 
-type FinancePageProps = {
-	onLogout?: () => void;
-};
-
-export function FinancePage({ onLogout }: FinancePageProps) {
+export function FinancePage() {
 	const {
 		pessoas,
 		transacoes,
@@ -36,7 +32,7 @@ export function FinancePage({ onLogout }: FinancePageProps) {
 
 	return (
 		<div className="min-h-screen overflow-x-clip bg-background">
-			<FinanceNav onLogout={onLogout} />
+			<FinanceNav />
 			<div className="mx-auto w-full min-w-0 max-w-6xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
 				<FinanceHeader totais={totais} />
 				<FinanceAlerts error={error} success={success} />
