@@ -34,6 +34,18 @@ yarn-error.log*
 # Docker
 **/docker-compose.override.yml
 
+# SQLite (local dev database)
+*.db
+*.db-shm
+*.db-wal
+
+# Legacy JSON data store
+backend/ControleGastos.Api/Data/
+
+# Test artifacts
+frontend/test-results/
+frontend/playwright-report/
+
 # OS generated files
 Thumbs.db
 Desktop.ini
