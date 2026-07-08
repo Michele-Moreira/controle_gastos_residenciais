@@ -7,8 +7,20 @@
 	],
 	"scripts": {
 		"bootstrap": "pnpm install",
+		"dev": "concurrently -k -n backend,frontend -c blue,green \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+		"dev:backend": "dotnet run --project backend/ControleGastos.Api",
+		"dev:frontend": "wait-on -t 120000 http-get://localhost:5000/health && pnpm --filter frontend dev",
+		"build": "pnpm --filter frontend build",
+		"lint": "pnpm --filter frontend lint",
 		"workspaces:dev": "pnpm -w -r run dev",
 		"workspaces:build": "pnpm -w -r run build",
-		"workspaces:lint": "pnpm -w -r run lint"
+		"workspaces:lint": "pnpm -r --if-present run lint",
+		"workspaces:test": "pnpm -w -r run test",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"concurrently": "^10.0.3",
+		"husky": "^9.1.7",
+		"wait-on": "^9.0.10"
 	}
 }

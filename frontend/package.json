@@ -1,25 +1,49 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
-  },
-  "devDependencies": {
-    "@types/node": "^24.13.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
-    "oxlint": "^1.71.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.1.1"
-  }
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"lint": "oxlint",
+		"type-check": "tsc -b --noEmit",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:e2e": "playwright test",
+		"test:e2e:api": "playwright test e2e/api-integration.spec.ts",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@radix-ui/react-label": "^2.1.2",
+		"@radix-ui/react-select": "^2.1.2",
+		"@radix-ui/react-slot": "^1.1.0",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.1",
+		"lucide-react": "^0.468.0",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"tailwind-merge": "^2.5.2",
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.51.1",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.3.0",
+		"@testing-library/user-event": "^14.6.1",
+		"@types/node": "^24.13.2",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react": "^6.0.3",
+		"@vitest/ui": "^3.1.1",
+		"autoprefixer": "^10.4.20",
+		"jsdom": "^26.0.0",
+		"oxlint": "^1.71.0",
+		"postcss": "^8.4.40",
+		"tailwindcss": "^3.4.14",
+		"typescript": "~6.0.2",
+		"vite": "^8.1.1",
+		"vitest": "^3.1.1"
+	}
 }

@@ -1,106 +1,144 @@
 # 💰 Controle de Gastos Residenciais
 
-## Estrutura principal
+Aplicação para gerenciar as finanças da casa: cadastre pessoas, registre receitas e despesas e acompanhe os totais por pessoa e o saldo geral.
 
-```text
-.
-├── .claude/              # regras, skills, agents e commands do assistente
-├── backend/              # API .NET 8 com Minimal APIs
-├── docs/                 # documentação de convenções e estrutura
-├── frontend/             # app React + TypeScript + Vite
+- **Frontend:** React + TypeScript + Vite + Tailwind/shadcn
+- **Backend:** API .NET 8 (Minimal APIs) com EF Core e autenticação JWT
+- **Banco:** SQLite no desenvolvimento, PostgreSQL em produção
+
+![Tela principal do Controle de Gastos Residenciais](docs/screenshot.png)
+
+---
+
+## 🚀 Começar em 2 passos
+
+> **Você vai precisar de:** [Node.js](https://nodejs.org) + [pnpm](https://pnpm.io/installation) e o [.NET 8 SDK](https://dotnet.microsoft.com/download).
+
+Na **raiz do projeto**, rode:
+
+```bash
+pnpm install
+pnpm dev
 ```
 
-## Visão geral do monorepo
+Pronto. O comando `pnpm dev` cuida de tudo automaticamente:
 
-Este repositório é um monorepo com múltiplos pacotes JavaScript gerenciados por `pnpm`.
+1. sobe a API .NET em `http://localhost:5000`;
+2. espera o health check (`/health`) responder;
+3. inicia o frontend em `http://localhost:5173`.
 
-- `frontend/`: app principal React + TypeScript.
-- `backend/`: API em C# .NET 8.
+Depois é só abrir 👉 **http://localhost:5173**
 
-A configuração do workspace está em `pnpm-workspace.yaml`.
+### Entrar no sistema (login de dev)
 
----
-
-## Backend
-
-O backend é uma Web API desenvolvida em **C#** com **.NET 8** (Minimal APIs), projetada para controlar finanças residenciais.
-
-A aplicação oferece:
-
-- cadastro e listagem de pessoas
-- lançamento de transações (receitas e despesas)
-- validações de tipo, valor e integridade referencial
-- relatórios consolidados de receita, despesa e saldo
-
-A orquestração para desenvolvimento é feita com **Docker** e **Docker Compose**.
+| Campo   | Valor   |
+| ------- | ------- |
+| Usuário | `admin` |
+| Senha   | `admin` |
 
 ---
 
-## 🚀 Como executar com Docker
+## 🐳 Alternativa: rodar com Docker
 
-Certifique-se de ter o **Docker** instalado.
-
-1. Na raiz do repositório, execute:
+Se preferir não instalar o .NET e o Node localmente, use o Docker (sobe API + PostgreSQL):
 
 ```bash
 docker compose up --build
 ```
 
-2. O serviço `controle-gastos-api` builda usando o contexto `./backend`.
-3. O volume `./backend/Data:/app/Data` preserva os dados entre reinícios.
+- API disponível em `http://localhost:5000`.
+- Em produção, defina `JWT_SECRET`, `AUTH_USERNAME` e `AUTH_PASSWORD` por variáveis de ambiente.
 
 ---
 
-## Frontend
+## ✨ O que dá para fazer
 
-O app principal está em `frontend/` e usa **Vite**, **React** e **TypeScript**.
+- Cadastrar e remover **pessoas** da casa.
+- Registrar **transações** (`receita` ou `despesa`) associadas a uma pessoa.
+- Ver **totais por pessoa** e o **resumo geral** (total de receitas, despesas e saldo).
 
-### Estrutura do frontend
+### Endpoints da API
+
+Todas as rotas (exceto o login) exigem o token JWT retornado por `POST /auth/login`.
+
+| Método   | Rota                | Descrição                          |
+| -------- | ------------------- | ---------------------------------- |
+| `POST`   | `/auth/login`       | Autentica e devolve o token JWT    |
+| `GET`    | `/pessoas`          | Lista as pessoas                   |
+| `POST`   | `/pessoas`          | Cria uma pessoa                    |
+| `DELETE` | `/pessoas/{id}`     | Remove uma pessoa                  |
+| `GET`    | `/transacoes`       | Lista as transações                |
+| `POST`   | `/transacoes`       | Cria uma transação                 |
+| `GET`    | `/totais`           | Retorna os totais por pessoa/geral |
+
+> Em ambiente de desenvolvimento, a documentação **Swagger** fica disponível em `http://localhost:5000/swagger`.
+
+---
+
+## 📁 Estrutura do projeto
 
 ```text
-frontend/src/
-├── components/
-├── hooks/
-├── lib/
-├── pages/
-├── styles/
-└── types/
+.
+├── backend/    # API .NET 8 (camadas Api, Application, Domain, Infrastructure, Tests)
+├── frontend/   # app React + TypeScript + Vite
+├── docs/       # documentação de convenções e estrutura
+└── .claude/    # regras e skills do assistente
 ```
 
-### Executar o frontend
+O backend segue arquitetura em camadas:
+
+```text
+backend/
+├── ControleGastos.Api/            # host HTTP, endpoints, middleware
+├── ControleGastos.Application/    # serviços, DTOs, validações (FluentValidation)
+├── ControleGastos.Domain/         # entidades e regras de domínio
+├── ControleGastos.Infrastructure/ # EF Core, JWT, migrations
+└── ControleGastos.Tests/          # testes de integração (xUnit)
+```
+
+---
+
+## 🧪 Testes
+
+**Frontend** (Vitest + Playwright), a partir de `frontend/`:
+
+```bash
+pnpm test          # testes unitários
+pnpm test:e2e      # testes end-to-end (Playwright)
+```
+
+**Backend** (xUnit), a partir de `backend/`:
+
+```bash
+dotnet test ControleGastos.sln
+```
+
+---
+
+## 🛠️ Rodar cada parte separadamente
+
+Caso queira subir apenas um lado do projeto:
+
+**Só a API:**
+
+```bash
+cd backend
+dotnet run --project ControleGastos.Api
+```
+
+**Só o frontend** (o Vite faz proxy de `/api` para a porta 5000):
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
-
-Abra `http://localhost:5173` no navegador.
 
 ---
 
-## Monorepo e `pnpm`
+## ❓ Problemas comuns
 
-O projeto usa `pnpm` para gerenciar workspaces.
-
-### Workspaces configurados
-
-- `frontend`
-
-### Comandos úteis na raiz
-
-```bash
-pnpm install        # instala dependências em todos os workspaces
-pnpm -w -r run dev  # executa dev em todos os workspaces
-pnpm -w -r run build
-pnpm -w -r run lint
+- **`pnpm` não encontrado:** instale com `npm install -g pnpm` ou veja o [guia oficial](https://pnpm.io/installation).
+- **Frontend não sobe / fica esperando:** a API precisa responder em `http://localhost:5000/health`. Verifique se o .NET 8 SDK está instalado (`dotnet --version`).
+- **Porta ocupada:** finalize o processo que usa a `5000` (API) ou a `5173` (frontend) e rode `pnpm dev` de novo.
 ```
-
-> Para adicionar outro workspace, crie a pasta com `package.json` e inclua-a em `pnpm-workspace.yaml`.
-
----
-
-## Observações
-
-- O `docker-compose.yml` foi adicionado na raiz para permitir `docker compose up` a partir do diretório principal.
-

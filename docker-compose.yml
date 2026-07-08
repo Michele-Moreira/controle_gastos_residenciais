@@ -1,12 +1,37 @@
-version: '3.8'
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: controle_gastos
+      POSTGRES_PASSWORD: controle_gastos
+      POSTGRES_DB: controle_gastos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U controle_gastos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   controle-gastos-api:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "5000:80"
-    volumes:
-      - ./backend/Data:/app/Data
     environment:
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Database__Provider=Postgres
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=controle_gastos;Username=controle_gastos;Password=controle_gastos
+      - Cors__AllowedOrigins__0=http://localhost:5173
+      - Cors__AllowedOrigins__1=http://127.0.0.1:5173
+      - Jwt__Secret=${JWT_SECRET:-production-secret-change-me-min-32-chars}
+      - Auth__Username=${AUTH_USERNAME:-admin}
+      - Auth__Password=${AUTH_PASSWORD:-admin}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
