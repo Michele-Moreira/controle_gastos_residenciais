@@ -3,7 +3,7 @@
 Aplicação para gerenciar as finanças da casa: cadastre pessoas, registre receitas e despesas e acompanhe os totais por pessoa e o saldo geral.
 
 - **Frontend:** React + TypeScript + Vite + Tailwind/shadcn
-- **Backend:** API .NET 8 (Minimal APIs) com EF Core e autenticação JWT
+- **Backend:** API .NET 8 (Minimal APIs) com EF Core
 - **Banco:** SQLite no desenvolvimento, PostgreSQL em produção
 
 ![Tela principal do Controle de Gastos Residenciais](docs/screenshot.png)
@@ -29,13 +29,6 @@ Pronto. O comando `pnpm dev` cuida de tudo automaticamente:
 
 Depois é só abrir 👉 **http://localhost:5173**
 
-### Entrar no sistema (login de dev)
-
-| Campo   | Valor   |
-| ------- | ------- |
-| Usuário | `admin` |
-| Senha   | `admin` |
-
 ---
 
 ## 🐳 Alternativa: rodar com Docker
@@ -47,7 +40,6 @@ docker compose up --build
 ```
 
 - API disponível em `http://localhost:5000`.
-- Em produção, defina `JWT_SECRET`, `AUTH_USERNAME` e `AUTH_PASSWORD` por variáveis de ambiente.
 
 ---
 
@@ -59,11 +51,8 @@ docker compose up --build
 
 ### Endpoints da API
 
-Todas as rotas (exceto o login) exigem o token JWT retornado por `POST /auth/login`.
-
 | Método   | Rota                | Descrição                          |
 | -------- | ------------------- | ---------------------------------- |
-| `POST`   | `/auth/login`       | Autentica e devolve o token JWT    |
 | `GET`    | `/pessoas`          | Lista as pessoas                   |
 | `POST`   | `/pessoas`          | Cria uma pessoa                    |
 | `DELETE` | `/pessoas/{id}`     | Remove uma pessoa                  |
@@ -92,7 +81,7 @@ backend/
 ├── ControleGastos.Api/            # host HTTP, endpoints, middleware
 ├── ControleGastos.Application/    # serviços, DTOs, validações (FluentValidation)
 ├── ControleGastos.Domain/         # entidades e regras de domínio
-├── ControleGastos.Infrastructure/ # EF Core, JWT, migrations
+├── ControleGastos.Infrastructure/ # EF Core, migrations
 └── ControleGastos.Tests/          # testes de integração (xUnit)
 ```
 
@@ -141,4 +130,3 @@ pnpm dev
 - **`pnpm` não encontrado:** instale com `npm install -g pnpm` ou veja o [guia oficial](https://pnpm.io/installation).
 - **Frontend não sobe / fica esperando:** a API precisa responder em `http://localhost:5000/health`. Verifique se o .NET 8 SDK está instalado (`dotnet --version`).
 - **Porta ocupada:** finalize o processo que usa a `5000` (API) ou a `5173` (frontend) e rode `pnpm dev` de novo.
-```
